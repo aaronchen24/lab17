@@ -246,6 +246,10 @@ rect! In this case, we've left its implementation entirely up to you.
 
 class square (p : point) (s : float) : shape =
 object(this)
+  
+  val mutable pos = p
+  val mutable side = s
+
   method area : float = side *. side
 
   method bounding_box : point * point =
@@ -256,15 +260,16 @@ object(this)
     let ((x1, y1), (x2, y2)) = this#bounding_box in
     ((x1 +. x2) /. 2., (y1 +. y2) /. 2.)
 
+  (* Move the square by the values tx and ty. *)
   method translate ((tx, ty) : point) : unit =
     let (x, y) = pos in
     pos <- (x +. tx, y +. ty)
 
+  (* Scale with width and height of a rectangle from the lower-
+     left corner. *)
   method scale (k : float) : unit =
     side <- side *. k
-
 end ;;
-
 (* Recall one of the original motivations for these exercises. We
 wanted to create a single area function that returns the area of any
 shape. Let's discover how easy this is with our objects.
